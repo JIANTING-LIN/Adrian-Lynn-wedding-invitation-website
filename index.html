@@ -461,7 +461,7 @@
                     <!-- 飲食需求 (對應 ID: 2026032914) -->
                     <div>
                         <label class="block text-sm tracking-widest text-morandi-dark mb-2">飲食需求 <span class="font-eng text-xs text-morandi-gray ml-1">DIETARY</span></label>
-                        <input type="text" name="entry.2026032914" class="w-full bg-white border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors placeholder-gray-400" placeholder="例如：1葷1素，或無特殊需求">
+                        <input type="text" name="entry.2026032914" class="w-full bg-white border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors placeholder-gray-400" placeholder="例如: 1葷2素，不參加則跳過">
                     </div>
 
                     <!-- 兒童椅需求 (對應 ID: 1595239962) -->
@@ -545,15 +545,6 @@
         // --- 摺疊面板 Accordion 邏輯 ---
         function toggleAccordion(button) {
             const content = button.nextElementSibling;
-            
-            // 關閉其他已打開的面板 (可選，這裡設定為允許多個打開)
-            // document.querySelectorAll('.accordion-content').forEach(c => {
-            //     if (c !== content) {
-            //         c.classList.remove('open');
-            //         c.previousElementSibling.classList.remove('open');
-            //     }
-            // });
-
             content.classList.toggle('open');
             button.classList.toggle('open');
         }
@@ -567,36 +558,26 @@
             // 1. 將全形數字轉半形，並去除所有空白，方便精準判斷
             let val = this.value.replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 65248)).replace(/\s+/g, '');
             
-            // 2. 嚴格判斷是否符合允許的格式：純數字、?大、?大小、?大?小
-            const isValidFormat = /^(\d+|\d+大|\d+大小|\d+大\d+小)$/.test(val);
-            
-            // 3. 取得開頭的大人數（若無法取得數字則視為 0）
-            let mainCount = 0;
-            const match = val.match(/^(\d+)/);
-            if (match) {
-                mainCount = parseInt(match[1], 10);
-            }
-            
-            const isZero = mainCount === 0;
+            // 2. 判斷是否為空、或是明確表示不參加的開頭 (如：0, 0大, 0小, 無, 不克出席)
+            const isAttending = val.length > 0 && !/^0/.test(val) && val !== '無' && val !== '不克出席';
 
-            // 必須格式完全正確，且主要人數大於 0 才顯示選項
-            if (isValidFormat && !isZero) {
-                // 顯示智能選項外框
+            if (isAttending) {
+                // 只要有出席，就顯示智能選項外框 (飲食需求一定會出現)
                 smartOptions.classList.remove('hidden');
-                // 延遲一點點讓 display:block 先生效，再改變透明度觸發 transition
                 setTimeout(() => {
                     smartOptions.classList.remove('opacity-0', 'translate-y-2');
                     smartOptions.classList.add('opacity-100', 'translate-y-0');
                 }, 10);
 
                 // --- 兒童椅智能顯示邏輯 ---
-                let showBabyChair = false; // 預設隱藏兒童椅
+                let showBabyChair = false; 
                 
-                if (val.includes('小')) {
-                    showBabyChair = true; // 有「小」字才顯示
-                    
-                    if (val.includes('0小') || val.includes('大小')) {
-                        showBabyChair = false; // 明確寫出「0小」或連續字「大小」則嚴格隱藏
+                // 嚴格判斷：僅在 "純整數+大+純整數+小" 時，且小的數量 > 0 時出現
+                const babyMatch = val.match(/^\d+大(\d+)小$/);
+                if (babyMatch) {
+                    const babyCount = parseInt(babyMatch[1], 10);
+                    if (babyCount > 0) {
+                        showBabyChair = true;
                     }
                 }
 
@@ -609,14 +590,14 @@
                 }
 
             } else {
-                // 隱藏整體：先淡出，再設定 hidden
+                // 不參加或未填寫：隱藏整體選項 (包含飲食與兒童椅)
                 smartOptions.classList.remove('opacity-100', 'translate-y-0');
                 smartOptions.classList.add('opacity-0', 'translate-y-2');
                 setTimeout(() => {
                     smartOptions.classList.add('hidden');
                 }, 500); // 等待 transition 結束
                 
-                // 隱藏整體選項時也順便重置兒童椅，確保資料乾淨
+                // 隱藏整體選項時順便重置兒童椅，確保資料乾淨
                 document.querySelector('select[name="entry.1595239962"]').value = '不需要';
             }
         });
