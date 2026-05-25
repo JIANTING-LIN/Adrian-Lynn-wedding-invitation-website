@@ -415,12 +415,10 @@
 
             <!-- 
               隱藏式 Iframe 技術
-              請將下方 form 的 action 替換為您的 Google Form 提交網址 
-              並將各 input/select 的 name 替換為 entry.XXXXXX
+              表單提交連結已為您核對並更新至最新版本 
             -->
             <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted){showSuccessModal();}"></iframe>
             
-            <!-- 替換處： action="您的Google表單提交連結" -->
             <form action="https://docs.google.com/forms/d/e/1FAIpQLSdr7GLImLWNhltnme6ZiPcTe0L1kfI4pDVIr0TOX8xVc02BPA/formResponse" method="POST" target="hidden_iframe" class="space-y-6" onsubmit="submitted=true;">
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
