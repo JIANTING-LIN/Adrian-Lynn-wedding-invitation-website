@@ -201,7 +201,7 @@
         <div class="max-w-2xl mx-auto px-6 text-center">
             <h2 class="text-xs tracking-[0.4em] text-morandi-green mb-8 uppercase">Countdown to the day</h2>
             
-            <div class="flex justify-center items-center space-x-3 md:space-x-6" id="countdown-container">
+            <div class="flex justify-center items-center space-x-2 md:space-x-4" id="countdown-container">
                 <div class="glow-card">
                     <span class="number" id="cd-days">00</span>
                     <div class="divider"></div>
@@ -216,6 +216,11 @@
                     <span class="number" id="cd-minutes">00</span>
                     <div class="divider"></div>
                     <span class="unit">分</span>
+                </div>
+                <div class="glow-card">
+                    <span class="number" id="cd-seconds">00</span>
+                    <div class="divider"></div>
+                    <span class="unit">秒</span>
                 </div>
             </div>
         </div>
@@ -319,7 +324,7 @@
                     <!-- 面板 1: 開車與停車 -->
                     <div class="border border-morandi-sand/20 rounded-xl overflow-hidden bg-white">
                         <button class="accordion-header w-full flex justify-between items-center p-5 bg-white text-left text-morandi-dark hover:bg-morandi-light/50 transition-colors" onclick="toggleAccordion(this)">
-                            <span class="tracking-widest font-medium"><span class="no-wrap">🚗 開車與停車資訊</span></span>
+                            <span class="tracking-widest font-medium"><span class="no-wrap">🚗 開車與 🅿️ 停車資訊</span></span>
                             <svg class="w-5 h-5 text-morandi-sand accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
                         <div class="accordion-content text-sm text-morandi-dark/80 bg-white">
@@ -332,8 +337,8 @@
                                 </ul>
                                 
                                 <!-- 停車場地圖 -->
-                                <div class="mb-6 mt-2">
-                                    <img src="https://i.postimg.cc/k5759yNH/S-162897922.jpg" alt="特約停車場地圖" class="w-full rounded-lg shadow-md border border-morandi-sand/20">
+                                <div class="mb-6 mt-4">
+                                    <img src="https://i.postimg.cc/VkTM4pjs/tianyuan-map.jpg" alt="特約停車場地圖" class="w-full h-auto rounded-lg shadow-md border border-morandi-sand/20" loading="lazy">
                                 </div>
                                 
                                 <h4 class="text-morandi-sand font-medium mb-2 border-l-2 border-morandi-sand pl-2 mt-4">折抵流程</h4>
@@ -357,7 +362,7 @@
                     <!-- 面板 2: 大眾運輸 -->
                     <div class="border border-morandi-sand/20 rounded-xl overflow-hidden bg-white">
                         <button class="accordion-header w-full flex justify-between items-center p-5 bg-white text-left text-morandi-dark hover:bg-morandi-light/50 transition-colors" onclick="toggleAccordion(this)">
-                            <span class="tracking-widest font-medium"><span class="no-wrap">🚆 台鐵、高鐵與公車</span></span>
+                            <span class="tracking-widest font-medium"><span class="no-wrap">🚆 台鐵、🚅 高鐵與 🚌 公車</span></span>
                             <svg class="w-5 h-5 text-morandi-sand accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
                         <div class="accordion-content text-sm text-morandi-dark/80 bg-white">
@@ -425,10 +430,10 @@
                         <input type="text" name="entry.2131853124" required class="w-full bg-morandi-light border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors" value="">
                     </div>
                     
-                    <!-- 聯絡電話/Email (對應 ID: 941056950) -->
+                    <!-- 信箱 (對應 ID: 941056950) -->
                     <div>
-                        <label class="block text-sm tracking-widest text-morandi-dark mb-2">聯絡電話 / Email <span class="font-eng text-xs text-morandi-gray ml-1">CONTACT</span> <span class="text-red-400">*</span></label>
-                        <input type="text" name="entry.941056950" required class="w-full bg-morandi-light border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors" value="">
+                        <label class="block text-sm tracking-widest text-morandi-dark mb-2">信箱 <span class="font-eng text-xs text-morandi-gray ml-1">EMAIL</span> <span class="text-red-400">*</span></label>
+                        <input type="email" name="entry.941056950" required class="w-full bg-morandi-light border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors" value="">
                     </div>
                 </div>
 
@@ -449,7 +454,7 @@
                 <!-- 參加人數 (對應 ID: 1197509168) -->
                 <div>
                     <label class="block text-sm tracking-widest text-morandi-dark mb-2">參加午宴人數 <span class="font-eng text-xs text-morandi-gray ml-1">GUESTS</span> <span class="text-red-400">*</span></label>
-                    <input type="number" id="guest-count" name="entry.1197509168" min="0" required class="w-full bg-morandi-light border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors" placeholder="請輸入人數 (填寫 0 代表不克出席)">
+                    <input type="text" id="guest-count" name="entry.1197509168" required class="w-full bg-morandi-light border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors" placeholder="請輸入幾大幾小，如: 2大1小 (填寫 0 代表不克出席)">
                 </div>
 
                 <!-- 智能顯示區塊：當人數 > 0 時顯示 -->
@@ -462,14 +467,14 @@
                     </div>
 
                     <!-- 兒童椅需求 (對應 ID: 1595239962) -->
-                    <div>
+                    <div id="baby-chair-container">
                         <label class="block text-sm tracking-widest text-morandi-dark mb-2">是否需要兒童椅 <span class="font-eng text-xs text-morandi-gray ml-1">BABY CHAIR</span></label>
                         <select name="entry.1595239962" class="w-full bg-white border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white appearance-none cursor-pointer">
                             <option value="不需要">不需要</option>
-                            <option value="1張">需要 1 張</option>
-                            <option value="2張">需要 2 張</option>
-                            <option value="3張">需要 3 張</option>
-                            <option value="4張">需要 4 張</option>
+                            <option value="需要一張">需要 1 張</option>
+                            <option value="需要兩張">需要 2 張</option>
+                            <option value="需要三張">需要 3 張</option>
+                            <option value="需要四張">需要 4 張</option>
                         </select>
                     </div>
                 </div>
@@ -527,14 +532,16 @@
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             // 補零
             document.getElementById("cd-days").innerText = days.toString().padStart(2, '0');
             document.getElementById("cd-hours").innerText = hours.toString().padStart(2, '0');
             document.getElementById("cd-minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("cd-seconds").innerText = seconds.toString().padStart(2, '0');
         }
 
-        setInterval(updateCountdown, 60000); // 每分鐘更新一次即可，不用秒
+        setInterval(updateCountdown, 1000); // 每秒更新一次
         updateCountdown(); // 初始化
 
         // --- 摺疊面板 Accordion 邏輯 ---
@@ -556,17 +563,45 @@
         // --- 表單智能邏輯 ---
         const guestSelect = document.getElementById('guest-count');
         const smartOptions = document.getElementById('smart-options');
+        const babyChairContainer = document.getElementById('baby-chair-container');
 
         guestSelect.addEventListener('input', function() {
-            const val = parseInt(this.value) || 0;
-            if (val > 0) {
-                // 顯示：移除隱藏，加入淡入動畫class
+            const val = this.value.trim();
+            // 判斷是否為 0、全形０或開頭是0的字串 (代表不參加)
+            const isZero = val === '0' || val === '０' || /^0/.test(val) || val === '無';
+            
+            if (val.length > 0 && !isZero) {
+                // 顯示智能選項外框
                 smartOptions.classList.remove('hidden');
                 // 延遲一點點讓 display:block 先生效，再改變透明度觸發 transition
                 setTimeout(() => {
                     smartOptions.classList.remove('opacity-0', 'translate-y-2');
                     smartOptions.classList.add('opacity-100', 'translate-y-0');
                 }, 10);
+
+                // --- 兒童椅智能顯示邏輯 ---
+                let showBabyChair = false; // 預設隱藏兒童椅
+                
+                if (val.includes('小')) {
+                    showBabyChair = true; // 有「小」字才顯示
+                    
+                    if (val.includes('0小') || val.includes('０小')) {
+                        showBabyChair = false; // 但如果明確寫出「0小」，則隱藏
+                    }
+                    
+                    if (/[1-9１-９]小/.test(val)) {
+                        showBabyChair = true;  // 若同時出現如「1小」、「2小」，確保顯示
+                    }
+                }
+
+                if (showBabyChair) {
+                    babyChairContainer.classList.remove('hidden');
+                } else {
+                    babyChairContainer.classList.add('hidden');
+                    // 隱藏時自動將兒童椅選項歸零，避免送出錯誤資料
+                    document.querySelector('select[name="entry.1595239962"]').value = '不需要';
+                }
+
             } else {
                 // 隱藏：先淡出，再設定 hidden
                 smartOptions.classList.remove('opacity-100', 'translate-y-0');
