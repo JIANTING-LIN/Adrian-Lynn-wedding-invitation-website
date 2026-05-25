@@ -433,7 +433,7 @@
                     <!-- 信箱 (對應 ID: 941056950) -->
                     <div>
                         <label class="block text-sm tracking-widest text-morandi-dark mb-2">信箱 <span class="font-eng text-xs text-morandi-gray ml-1">EMAIL</span> <span class="text-red-400">*</span></label>
-                        <input type="email" name="entry.941056950" required class="w-full bg-morandi-light border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors" value="">
+                        <input type="email" name="entry.941056950" required class="w-full bg-morandi-light border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors placeholder-gray-400" placeholder="建議填寫Gmail">
                     </div>
                 </div>
 
@@ -454,7 +454,7 @@
                 <!-- 參加人數 (對應 ID: 1197509168) -->
                 <div>
                     <label class="block text-sm tracking-widest text-morandi-dark mb-2">參加午宴人數 <span class="font-eng text-xs text-morandi-gray ml-1">GUESTS</span> <span class="text-red-400">*</span></label>
-                    <input type="text" id="guest-count" name="entry.1197509168" required class="w-full bg-morandi-light border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors" placeholder="請輸入幾大幾小，如: 2大1小 (填寫 0 代表不克出席)">
+                    <input type="text" id="guest-count" name="entry.1197509168" required class="w-full bg-morandi-light border border-morandi-sand/30 rounded-lg px-4 py-3 text-morandi-dark focus:bg-white transition-colors" placeholder="請輸入幾大幾小，如: 2大1小">
                 </div>
 
                 <!-- 智能顯示區塊：當人數 > 0 時顯示 -->
@@ -566,11 +566,23 @@
         const babyChairContainer = document.getElementById('baby-chair-container');
 
         guestSelect.addEventListener('input', function() {
-            const val = this.value.trim();
-            // 判斷是否為 0、全形０或開頭是0的字串 (代表不參加)
-            const isZero = val === '0' || val === '０' || /^0/.test(val) || val === '無';
+            // 1. 將全形數字轉半形，並去除所有空白，方便精準判斷
+            let val = this.value.replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 65248)).replace(/\s+/g, '');
             
-            if (val.length > 0 && !isZero) {
+            // 2. 嚴格判斷是否符合允許的格式：純數字、?大、?大小、?大?小
+            const isValidFormat = /^(\d+|\d+大|\d+大小|\d+大\d+小)$/.test(val);
+            
+            // 3. 取得開頭的大人數（若無法取得數字則視為 0）
+            let mainCount = 0;
+            const match = val.match(/^(\d+)/);
+            if (match) {
+                mainCount = parseInt(match[1], 10);
+            }
+            
+            const isZero = mainCount === 0;
+
+            // 必須格式完全正確，且主要人數大於 0 才顯示選項
+            if (isValidFormat && !isZero) {
                 // 顯示智能選項外框
                 smartOptions.classList.remove('hidden');
                 // 延遲一點點讓 display:block 先生效，再改變透明度觸發 transition
@@ -585,12 +597,8 @@
                 if (val.includes('小')) {
                     showBabyChair = true; // 有「小」字才顯示
                     
-                    if (val.includes('0小') || val.includes('０小')) {
-                        showBabyChair = false; // 但如果明確寫出「0小」，則隱藏
-                    }
-                    
-                    if (/[1-9１-９]小/.test(val)) {
-                        showBabyChair = true;  // 若同時出現如「1小」、「2小」，確保顯示
+                    if (val.includes('0小') || val.includes('大小')) {
+                        showBabyChair = false; // 明確寫出「0小」或連續字「大小」則嚴格隱藏
                     }
                 }
 
@@ -603,12 +611,15 @@
                 }
 
             } else {
-                // 隱藏：先淡出，再設定 hidden
+                // 隱藏整體：先淡出，再設定 hidden
                 smartOptions.classList.remove('opacity-100', 'translate-y-0');
                 smartOptions.classList.add('opacity-0', 'translate-y-2');
                 setTimeout(() => {
                     smartOptions.classList.add('hidden');
                 }, 500); // 等待 transition 結束
+                
+                // 隱藏整體選項時也順便重置兒童椅，確保資料乾淨
+                document.querySelector('select[name="entry.1595239962"]').value = '不需要';
             }
         });
 
